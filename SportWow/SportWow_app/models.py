@@ -38,6 +38,10 @@ class Team(models.Model):
     name = models.CharField(max_length=128, null=False, blank=False)
     city = models.ForeignKey(City, on_delete=models.RESTRICT)
     country = models.ForeignKey(Country, on_delete=models.RESTRICT)
+    stadium = models.ForeignKey(Stadium, on_delete=models.RESTRICT)
+    picture_url = models.URLField(blank=True, null=True)
+    league = models.ForeignKey(League, on_delete=models.RESTRICT)
+    points = models.CharField(max_length=3, null=True, blank=True,default=0)
 
     def __str__(self):
         return f"{self.name}"
@@ -48,6 +52,7 @@ class Player(models.Model):
     last_name = models.CharField(max_length=128, null=False, blank=False)
     birth_date = models.DateField()
     country = models.ForeignKey(Country, on_delete=models.RESTRICT)
+    picture_url = models.URLField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"

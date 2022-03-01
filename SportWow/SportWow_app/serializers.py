@@ -14,7 +14,7 @@ class TeamSerializer(serializers.ModelSerializer):
     class Meta:
         model = Team
         fields = '__all__'
-        depth = 0
+        depth = 1
 
 
 class PlayerSerializer(serializers.ModelSerializer):
