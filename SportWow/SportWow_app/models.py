@@ -21,6 +21,7 @@ class City(models.Model):
 class Stadium(models.Model):
     name = models.CharField(max_length=128, null=False, blank=False)
     city = models.ForeignKey(City, on_delete=models.RESTRICT)
+    capacity = models.CharField(max_length=6, null=False, blank=False)
 
     def __str__(self):
         return f"{self.name}, {self.city}"
