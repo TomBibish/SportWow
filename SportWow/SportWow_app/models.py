@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 # Create your models here.
@@ -21,7 +22,7 @@ class City(models.Model):
 class Stadium(models.Model):
     name = models.CharField(max_length=128, null=False, blank=False)
     city = models.ForeignKey(City, on_delete=models.RESTRICT)
-    capacity = models.CharField(max_length=6, null=False, blank=False)
+    capacity = models.IntegerField(null=False, blank=False)
 
     def __str__(self):
         return f"{self.name}, {self.city}"
@@ -42,7 +43,9 @@ class Team(models.Model):
     stadium = models.ForeignKey(Stadium, on_delete=models.RESTRICT)
     picture_url = models.URLField(blank=True, null=True)
     league = models.ForeignKey(League, on_delete=models.RESTRICT)
-    points = models.CharField(max_length=3, null=True, blank=True,default=0)
+    points = models.IntegerField(null=True, blank=True)
+    goals_for = models.IntegerField(null=True, blank=True, default=0)
+    goals_against = models.IntegerField(null=True, blank=True, default=0)
 
     def __str__(self):
         return f"{self.name}"
@@ -85,3 +88,23 @@ class TeamCoach(models.Model):
     def __str__(self):
         return f"{self.coach} of {self.team}"
 
+
+class Match(models.Model):
+    round = models.IntegerField(null=False, blank=False)
+    game_date = models.DateField()
+    home_team = models.ForeignKey(Team, on_delete=models.RESTRICT, related_name='home_team')
+    away_team = models.ForeignKey(Team, on_delete=models.RESTRICT, related_name='away_team')
+    home_score = models.IntegerField( null=True, blank=True)
+    away_score = models.IntegerField( null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.round}) {self.home_team} VS {self.away_team}"
+
+
+class PersonalWatchList(models.Model):
+    user = models.ForeignKey(User, on_delete=models.RESTRICT)
+    team = models.ForeignKey(Team, on_delete=models.RESTRICT, null=True, blank=True)
+    League = models.ForeignKey(League, on_delete=models.RESTRICT, null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.user} Watch List Parameter"

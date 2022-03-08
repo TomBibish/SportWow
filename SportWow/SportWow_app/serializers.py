@@ -22,3 +22,17 @@ class PlayerSerializer(serializers.ModelSerializer):
         model = Player
         fields = '__all__'
         depth = 0
+
+
+class StadiumSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Stadium
+        fields = '__all__'
+        depth = 0
+
+
+class MatchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Match
+        fields = '__all__'
+        depth = 0
