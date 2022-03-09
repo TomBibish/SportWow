@@ -36,3 +36,10 @@ class MatchSerializer(serializers.ModelSerializer):
         model = Match
         fields = '__all__'
         depth = 0
+
+
+class PersonalWatchListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PersonalWatchList
+        fields = '__all__'
+        depth = 0
