@@ -94,8 +94,9 @@ class Match(models.Model):
     game_date = models.DateField()
     home_team = models.ForeignKey(Team, on_delete=models.RESTRICT, related_name='home_team')
     away_team = models.ForeignKey(Team, on_delete=models.RESTRICT, related_name='away_team')
-    home_score = models.IntegerField( null=True, blank=True)
-    away_score = models.IntegerField( null=True, blank=True)
+    home_score = models.IntegerField(null=True, blank=True)
+    away_score = models.IntegerField(null=True, blank=True)
+    attendance = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.round}) {self.home_team} VS {self.away_team}"

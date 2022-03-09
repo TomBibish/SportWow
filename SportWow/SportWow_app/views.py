@@ -1,4 +1,4 @@
-from django.db.models import F
+from django.db.models import F, Q
 from django.shortcuts import render
 
 # Create your views here.
@@ -61,39 +61,39 @@ def stadiums(request):
         return Response(serializer.data)
 
 
+@authentication_classes([BasicAuthentication])
+@permission_classes([IsAuthenticated])
 @api_view(['GET', 'POST'])
 def matches(request):
     if request.method == 'GET':
-        all_matches = Match.objects.all().order_by('round')
+        all_matches = Match.objects.all().order_by('round', 'game_date')
         if 'round' in request.GET and request.GET['round']:
             all_matches = all_matches.filter(round=request.GET['round'])
+        if 'team' in request.GET and request.GET['team']:
+            all_matches = all_matches.filter((Q(away_team__name__icontains=request.GET['team']) |
+                                                        Q(home_team__name__icontains=request.GET['team']) ))
         serializer = MatchSerializer(all_matches, many=True)
         return Response(serializer.data)
     if request.method == 'POST':
         round = request.data['round']
+        attendance = request.data['attendance']
         game_date = request.data['game_date']
         home_team = Team.objects.get(name=request.data['home_team'])
         away_team = Team.objects.get(name=request.data['away_team'])
         home_score = request.data['home_score']
         away_score = request.data['away_score']
         new_match = Match(round=round, game_date=game_date, home_team=home_team,
-                          away_team=away_team, home_score=home_score, away_score=away_score)
+                          away_team=away_team, home_score=home_score, away_score=away_score, attendance=attendance)
         home_team.goals_for = home_team.goals_for + home_score
         away_team.goals_for = away_team.goals_for + away_score
         home_team.goals_against = home_team.goals_against + away_score
         away_team.goals_against = away_team.goals_against + home_score
         if home_score == away_score:
-            print("Draw")
-            print(f"home_team.points before {home_team.points}")
             home_team.points = + int(1)
             away_team.points = + int(1)
-            print(f"home_team.points after {home_team.points}")
         if home_score > away_score:
-            print("Draw")
-            print("Home Team Won")
             home_team.points = + int(3)
         if home_score < away_score:
-            print("Away Team Won")
             away_team.points = + int(3)
         home_team.save()
         away_team.save()
