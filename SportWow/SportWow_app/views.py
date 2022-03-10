@@ -10,6 +10,7 @@ from rest_framework.response import Response
 
 from .models import *
 from .serializers import *
+from.custom_queries import *
 
 
 @api_view(['GET'])
@@ -142,4 +143,42 @@ def personal_watch_list_details(request,user_id, pk):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+@api_view(['GET'])
+def compare_players(request):
+    player1_first_name = request.GET.get('player1_first_name')
+    player1_last_name = request.GET.get('player1_last_name')
+    player2_first_name = request.GET.get('player2_first_name')
+    player2_last_name = request.GET.get('player2_last_name')
+    print('player1_first_name' + player1_first_name)
+    result = compare_two_players(player1_first_name, player1_last_name, player2_first_name, player2_last_name)
+    return Response(result, status=status.HTTP_200_OK)
 
+
+@api_view(['GET'])
+def compare_teams(request):
+    team1 = request.GET.get('team1')
+    team2 = request.GET.get('team2')
+    league = request.GET.get('league')
+    result = compare_two_teams(team1, team2, league)
+    return Response(result, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def league_table(request):
+    league = request.GET.get('league')
+    result = show_league_table(league)
+    return Response(result, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def league_assists(request):
+    league = request.GET.get('league')
+    result = show_league_assists(league)
+    return Response(result, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def league_goals(request):
+    league = request.GET.get('league')
+    result = show_league_goals(league)
+    return Response(result, status=status.HTTP_200_OK)
