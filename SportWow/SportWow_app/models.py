@@ -66,6 +66,11 @@ class TeamPlayer(models.Model):
     player = models.ForeignKey(Player, on_delete=models.RESTRICT)
     team = models.ForeignKey(Team, on_delete=models.RESTRICT)
     is_active = models.BooleanField()
+    goals = models.IntegerField(default=0)
+    assists = models.IntegerField(default=0)
+    yellow_cards = models.IntegerField(default=0)
+    red_cards = models.IntegerField(default=0)
+    appearances = models.IntegerField(default=0)
 
     def __str__(self):
         return f"{self.player} from {self.team}"
@@ -99,7 +104,7 @@ class Match(models.Model):
     attendance = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
-        return f"{self.round}) {self.home_team} VS {self.away_team}"
+        return f"{self.round}) {self.home_team} VS {self.away_team} from {self.home_team.league}"
 
 
 class PersonalWatchList(models.Model):
@@ -108,4 +113,4 @@ class PersonalWatchList(models.Model):
     League = models.ForeignKey(League, on_delete=models.RESTRICT, null=True, blank=True)
 
     def __str__(self):
-        return f"{self.user} Watch List Parameter"
+        return f"{self.user} added {self.team} and {self.League} to Watch List"
