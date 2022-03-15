@@ -30,6 +30,14 @@ def teams(request):
 
 
 @api_view(['GET'])
+def team_details(request, team_name):
+    if request.method == 'GET':
+        team = Team.objects.get(name=team_name)
+        serializer = TeamSerializer(team)
+        return Response(serializer.data)
+
+
+@api_view(['GET'])
 def league_teams(request, league_id):
     if request.method == 'GET':
         try:

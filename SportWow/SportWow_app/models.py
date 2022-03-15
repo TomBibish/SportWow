@@ -31,6 +31,7 @@ class Stadium(models.Model):
 class League(models.Model):
     name = models.CharField(max_length=128, null=False, blank=False)
     country = models.ForeignKey(Country, on_delete=models.RESTRICT)
+    picture_url = models.URLField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.name}"
@@ -58,6 +59,7 @@ class Player(models.Model):
     country = models.ForeignKey(Country, on_delete=models.RESTRICT)
     picture_url = models.URLField(blank=True, null=True)
 
+
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
@@ -79,7 +81,7 @@ class TeamPlayer(models.Model):
 class Coach(models.Model):
     first_name = models.CharField(max_length=128, null=False, blank=False)
     last_name = models.CharField(max_length=128, null=False, blank=False)
-    is_active = models.BooleanField()
+    picture_url = models.URLField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
