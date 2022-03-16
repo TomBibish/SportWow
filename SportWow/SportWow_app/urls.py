@@ -20,5 +20,4 @@ urlpatterns = [
         path('stats/assists_leader', views.league_assists),
         path('stats/goals_leader', views.league_goals),
         path('stats/crowd_avg', views.crowd_avg),
-        # path('api-token-auth/', obtain_auth_token),
 ]
