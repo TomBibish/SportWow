@@ -59,7 +59,6 @@ class Player(models.Model):
     country = models.ForeignKey(Country, on_delete=models.RESTRICT)
     picture_url = models.URLField(blank=True, null=True)
 
-
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
@@ -116,3 +115,5 @@ class PersonalWatchList(models.Model):
 
     def __str__(self):
         return f"{self.user} added {self.team} and {self.League} to Watch List"
+
+

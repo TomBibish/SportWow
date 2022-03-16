@@ -17,6 +17,13 @@ class TeamSerializer(serializers.ModelSerializer):
         depth = 1
 
 
+class TeamCoachSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TeamCoach
+        fields = '__all__'
+        depth = 1
+
+
 class PlayerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Player

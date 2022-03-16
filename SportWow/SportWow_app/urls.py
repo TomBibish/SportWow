@@ -1,4 +1,6 @@
 from django.urls import path
+from rest_framework.authtoken.views import obtain_auth_token
+
 from . import views
 urlpatterns = [
         path('leagues', views.leagues, name='leagues'),
@@ -10,9 +12,12 @@ urlpatterns = [
         path('matches', views.matches, name='matches'),
         path('personal_watch_list/<int:user_id>', views.personal_watch_list),
         path('personal_watch_list/<int:user_id>/<int:pk>', views.personal_watch_list_details),
+        path('team_coach/<str:team_name>', views.team_coach),
         path('stats/compare_players', views.compare_players),
         path('stats/compare_teams', views.compare_teams),
         path('stats/league_table', views.league_table),
         path('stats/assists_leader', views.league_assists),
-        path('stats/goals_leader', views.league_goals)
+        path('stats/goals_leader', views.league_goals),
+        path('stats/crowd_avg', views.crowd_avg),
+        # path('api-token-auth/', obtain_auth_token),
 ]

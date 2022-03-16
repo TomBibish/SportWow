@@ -78,3 +78,30 @@ def show_league_goals(league):
                      "team":row[3], 'goals': row[4]} for row in rows]
         return res_list
 
+
+def show_crowd_avg(team_name):
+    with connection.cursor() as cursor:
+        cursor.execute("""select avg(match.attendance), team."name" from "SportWow_app_match" match
+                            join "SportWow_app_team" team 
+                            on (team.id = match.home_team_id or team.id = match.away_team_id)
+                            and team.name = %s
+                            group by team."name";""",
+                       [team_name])
+        rows = cursor.fetchall()
+        res_list = [{"avg": row[0], "name": row[1]} for row in rows]
+        return res_list
+
+
+def show_players_for_team(team_name):
+    with connection.cursor() as cursor:
+        cursor.execute("""select p.first_name , p.last_name , tp.appearances , tp.goals ,
+                                tp.assists, tp.yellow_cards, tp.red_cards
+                                from "SportWow_app_player" p
+                                join "SportWow_app_teamplayer" tp on p.id = tp.player_id
+                                join "SportWow_app_team" t on t.id = tp.team_id 
+                                where tp.is_active = true and t."name" = %s;""",
+                       [team_name])
+        rows = cursor.fetchall()
+        res_list = [{"name": row[0] + " " + row[1], "appearances": row[2], "goals": row[3], "assists": row[4]
+                     , "yellow_cards": row[5], "red_cards":[6]} for row in rows]
+        return res_list
