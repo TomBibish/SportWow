@@ -95,7 +95,7 @@ def show_crowd_avg(team_name):
 def show_players_for_team(team_name):
     with connection.cursor() as cursor:
         cursor.execute("""select p.first_name , p.last_name , tp.appearances , tp.goals ,
-                                tp.assists, tp.yellow_cards, tp.red_cards
+                                tp.assists, tp.yellow_cards, tp.red_cards, p.picture_url
                                 from "SportWow_app_player" p
                                 join "SportWow_app_teamplayer" tp on p.id = tp.player_id
                                 join "SportWow_app_team" t on t.id = tp.team_id 
@@ -103,5 +103,5 @@ def show_players_for_team(team_name):
                        [team_name])
         rows = cursor.fetchall()
         res_list = [{"name": row[0] + " " + row[1], "appearances": row[2], "goals": row[3], "assists": row[4]
-                     , "yellow_cards": row[5], "red_cards":[6]} for row in rows]
+                     , "yellow_cards": row[5], "red_cards":row[6], "picture": row[7]} for row in rows]
         return res_list

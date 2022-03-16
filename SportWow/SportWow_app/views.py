@@ -211,3 +211,9 @@ def crowd_avg(request):
     team = request.GET.get('team')
     result = show_crowd_avg(team)
     return Response(result, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def team_players(request, team_name):
+    result = show_players_for_team(team_name)
+    return Response(result, status=status.HTTP_200_OK)
