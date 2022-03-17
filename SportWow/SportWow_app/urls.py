@@ -9,6 +9,7 @@ urlpatterns = [
         path('teams/<str:team_name>/players', views.team_players),
         path('players', views.players, name='players'),
         path('leagues/<int:league_id>', views.league_teams),
+        path('leagues/<int:league_id>/players', views.league_players),
         path('stadiums', views.stadiums, name='stadiums'),
         path('matches', views.matches, name='matches'),
         path('personal_watch_list/<int:user_id>', views.personal_watch_list),

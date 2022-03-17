@@ -105,3 +105,17 @@ def show_players_for_team(team_name):
         res_list = [{"name": row[0] + " " + row[1], "appearances": row[2], "goals": row[3], "assists": row[4]
                      , "yellow_cards": row[5], "red_cards":row[6], "picture": row[7]} for row in rows]
         return res_list
+
+
+def show_players_for_league(league_id):
+    with connection.cursor() as cursor:
+        cursor.execute("""select p.first_name , p.last_name , tp.appearances , tp.goals ,
+                                tp.assists, tp.yellow_cards, tp.red_cards, p.picture_url from "SportWow_app_player" p
+                            join "SportWow_app_teamplayer" tp on tp.player_id = p.id 
+                            join "SportWow_app_team" t on t.id =tp.team_id 
+                            where tp.is_active =true and t.league_id = %s;""",
+                       [league_id])
+        rows = cursor.fetchall()
+        res_list = [{"name": row[0] + " " + row[1], "appearances": row[2], "goals": row[3], "assists": row[4]
+                        , "yellow_cards": row[5], "red_cards": row[6], "picture": row[7]} for row in rows]
+        return res_list
