@@ -47,6 +47,9 @@ class Team(models.Model):
     points = models.IntegerField(null=True, blank=True)
     goals_for = models.IntegerField(null=True, blank=True, default=0)
     goals_against = models.IntegerField(null=True, blank=True, default=0)
+    color1 = models.CharField(max_length=128, default='white')
+    color2 = models.CharField(max_length=128, default='black')
+
 
     def __str__(self):
         return f"{self.name}"
@@ -103,6 +106,8 @@ class Match(models.Model):
     home_score = models.IntegerField(null=True, blank=True)
     away_score = models.IntegerField(null=True, blank=True)
     attendance = models.IntegerField(null=True, blank=True)
+    link = models.URLField()
+
 
     def __str__(self):
         return f"{self.round}) {self.home_team} VS {self.away_team} from {self.home_team.league}"

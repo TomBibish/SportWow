@@ -124,7 +124,6 @@ class Migration(migrations.Migration):
                 ('attendance', models.IntegerField(blank=True, null=True)),
                 ('away_team', models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, related_name='away_team', to='SportWow_app.team')),
                 ('home_team', models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, related_name='home_team', to='SportWow_app.team')),
-                ('league', models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, to='SportWow_app.league')),
             ],
         ),
         migrations.AddField(

@@ -89,7 +89,7 @@ def stadiums(request):
 @api_view(['GET', 'POST'])
 def matches(request):
     if request.method == 'GET':
-        all_matches = Match.objects.all().order_by('round', 'game_date')
+        all_matches = Match.objects.all().order_by('-round', 'game_date')
         if 'round' in request.GET and request.GET['round']:
             all_matches = all_matches.filter(round=request.GET['round'])
         if 'team' in request.GET and request.GET['team']:
