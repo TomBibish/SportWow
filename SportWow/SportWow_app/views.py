@@ -3,7 +3,9 @@ from django.shortcuts import render
 
 # Create your views here.
 from rest_framework import status
-from rest_framework.authentication import BasicAuthentication
+from rest_framework.authentication import BasicAuthentication, TokenAuthentication
+from rest_framework.authtoken.models import Token
+from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -84,7 +86,7 @@ def stadiums(request):
         return Response(serializer.data)
 
 
-@authentication_classes([BasicAuthentication])
+@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 @api_view(['GET', 'POST'])
 def matches(request):
@@ -223,3 +225,22 @@ def team_players(request, team_name):
 def league_players(request, league_id):
     result = show_players_for_league(league_id)
     return Response(result, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def matches_rounds(request):
+    result = get_rounds()
+    return Response(result, status=status.HTTP_200_OK)
+
+
+
+obtain_auth_token = ObtainAuthToken.as_view()
+
+
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def sign_out(request):
+    token1 = Token.objects.get(key=request.auth)
+    token1.delete()
+    return 'Deleted successfully'

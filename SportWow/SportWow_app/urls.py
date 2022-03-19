@@ -12,6 +12,7 @@ urlpatterns = [
         path('leagues/<int:league_id>/players', views.league_players),
         path('stadiums', views.stadiums, name='stadiums'),
         path('matches', views.matches, name='matches'),
+        path('rounds', views.matches_rounds),
         path('personal_watch_list/<int:user_id>', views.personal_watch_list),
         path('personal_watch_list/<int:user_id>/<int:pk>', views.personal_watch_list_details),
         path('team_coach/<str:team_name>', views.team_coach),
@@ -21,4 +22,7 @@ urlpatterns = [
         path('stats/assists_leader', views.league_assists),
         path('stats/goals_leader', views.league_goals),
         path('stats/crowd_avg', views.crowd_avg),
+        path('api-token-auth', obtain_auth_token),
+        path("sign_out", views.sign_out),
+
 ]
