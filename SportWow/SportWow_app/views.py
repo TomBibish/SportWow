@@ -126,7 +126,7 @@ def matches(request):
         return Response(status=status.HTTP_201_CREATED)
 
 
-@authentication_classes([BasicAuthentication])
+@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 @api_view(['GET', 'POST'])
 def personal_watch_list(request, user_id):

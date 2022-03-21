@@ -106,7 +106,7 @@ class Match(models.Model):
     home_score = models.IntegerField(null=True, blank=True)
     away_score = models.IntegerField(null=True, blank=True)
     attendance = models.IntegerField(null=True, blank=True)
-    link = models.URLField()
+    link = models.URLField(null=True, blank=True)
 
 
     def __str__(self):
