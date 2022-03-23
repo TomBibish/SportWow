@@ -24,5 +24,4 @@ urlpatterns = [
         path('stats/crowd_avg', views.crowd_avg),
         path('api-token-auth', obtain_auth_token),
         path("sign_out", views.sign_out),
-
 ]

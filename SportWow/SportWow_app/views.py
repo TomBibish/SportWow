@@ -86,9 +86,9 @@ def stadiums(request):
         return Response(serializer.data)
 
 
+@api_view(['GET', 'POST'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-@api_view(['GET', 'POST'])
 def matches(request):
     if request.method == 'GET':
         all_matches = Match.objects.all().order_by('-round', 'game_date')
@@ -126,9 +126,9 @@ def matches(request):
         return Response(status=status.HTTP_201_CREATED)
 
 
+@api_view(['GET', 'POST'])
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
-@api_view(['GET', 'POST'])
 def personal_watch_list(request, user_id):
     try:
         all_watch_list = PersonalWatchList.objects.get(user=user_id)
