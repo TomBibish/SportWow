@@ -73,7 +73,7 @@ class TicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
         fields = '__all__'
-        depth = 0
+        depth = 3
 
 
 class OrderedTicketSerializer(serializers.ModelSerializer):

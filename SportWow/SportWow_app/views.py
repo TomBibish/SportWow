@@ -261,8 +261,8 @@ def tickets(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@authentication_classes([TokenAuthentication])
-@permission_classes([IsAuthenticated])
+# @authentication_classes([TokenAuthentication])
+# @permission_classes([IsAuthenticated])
 @api_view(['GET', 'PUT', 'DELETE'])
 def ticket_details(request, pk):
     try:
