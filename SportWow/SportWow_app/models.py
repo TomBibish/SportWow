@@ -110,15 +110,21 @@ class Match(models.Model):
 
 
     def __str__(self):
-        return f"{self.round}) {self.home_team} VS {self.away_team} from {self.home_team.league}"
+        return f"{self.home_team} VS {self.away_team} from {self.home_team.league} round {self.round}"
 
 
-class PersonalWatchList(models.Model):
-    user = models.ForeignKey(User, on_delete=models.RESTRICT)
-    team = models.ForeignKey(Team, on_delete=models.RESTRICT, null=True, blank=True)
-    League = models.ForeignKey(League, on_delete=models.RESTRICT, null=True, blank=True)
+class Ticket(models.Model):
+    match = models.ForeignKey(Match, on_delete=models.RESTRICT)
+    price = models.FloatField()
 
     def __str__(self):
-        return f"{self.user} added {self.team} and {self.League} to Watch List"
+        return f"Ticket for {self.match}"
 
 
+class OrderedTicket(models.Model):
+    ticket = models.ForeignKey(Ticket, on_delete=models.RESTRICT)
+    user = models.ForeignKey(User, on_delete=models.RESTRICT)
+    amount = models.IntegerField(null=False, blank=False)
+
+    def __str__(self):
+        return f"{self.user} orderd {self.amount} tickets for {self.ticket.match}"

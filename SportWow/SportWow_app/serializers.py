@@ -45,8 +45,39 @@ class MatchSerializer(serializers.ModelSerializer):
         depth = 1
 
 
-class PersonalWatchListSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = PersonalWatchList
+        model = User
+        fields = (
+            'username',
+            'password',
+            'email',
+            'first_name',
+            'last_name'
+        )
+        extra_kwargs = {'password':{'write_only':True}}
+        depth = 0
+
+    def save(self):
+        user = User(email=self.validated_data['email'],
+                    username=self.validated_data['username'],
+                    first_name=self.validated_data['first_name'],
+                    last_name=self.validated_data['last_name'])
+        password = self.validated_data['password']
+        user.set_password(password)
+        user.save()
+        return user
+
+
+class TicketSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ticket
+        fields = '__all__'
+        depth = 0
+
+
+class OrderedTicketSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderedTicket
         fields = '__all__'
         depth = 0

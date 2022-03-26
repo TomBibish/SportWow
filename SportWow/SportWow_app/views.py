@@ -7,6 +7,7 @@ from rest_framework.authentication import BasicAuthentication, TokenAuthenticati
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -126,45 +127,8 @@ def matches(request):
         return Response(status=status.HTTP_201_CREATED)
 
 
-@api_view(['GET', 'POST'])
-@authentication_classes([TokenAuthentication])
-@permission_classes([IsAuthenticated])
-def personal_watch_list(request, user_id):
-    try:
-        all_watch_list = PersonalWatchList.objects.get(user=user_id)
-    except PersonalWatchList.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-    if request.method == 'GET':
-        serializer = PersonalWatchListSerializer(all_watch_list, many=True)
-        return Response(serializer.data)
-    if request.method == 'POST':
-        serializer = PersonalWatchListSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-@authentication_classes([BasicAuthentication])
-@permission_classes([IsAuthenticated])
-@api_view(['GET', 'PUT', 'DELETE'])
-def personal_watch_list_details(request, user_id, pk):
-    try:
-        watch_list_details = PersonalWatchList.objects.get(pk=pk, user=user_id)
-    except PersonalWatchList.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-    if request.method == 'GET':
-        serializer = PersonalWatchListSerializer(watch_list_details)
-        return Response(serializer.data)
-    if request.method == 'PUT':
-        serializer = PersonalWatchListSerializer(watch_list_details, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    if request.method == 'DELETE':
-        watch_list_details.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 @api_view(['GET'])
@@ -244,3 +208,93 @@ def sign_out(request):
     token1 = Token.objects.get(key=request.auth)
     token1.delete()
     return 'Deleted successfully'
+
+
+@api_view(['POST'])
+def register(request):
+    # if request.method == 'GET':
+    #     users = User.objects.all()
+    #     users_list = [user for user in users]
+    #     serializer = UserSerializer(users_list, many=True)
+    #     print(serializer.data)
+    #     return Response(serializer.data, status=status.HTTP_200_OK)
+    if request.method == 'POST':
+        serializer = UserSerializer(data=request.data)
+        data = {}
+        if serializer.is_valid():
+            user = serializer.save()
+            data['response'] = "successfully added"
+            data['email'] = user.email
+            data['username'] = user.username
+        else:
+            data = serializer.errors
+        return Response(data)
+
+
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def current_user(request):
+    curr_user = request.user
+    data = {
+        "first_name": curr_user.first_name,
+        "last_name": curr_user.last_name,
+        "id": curr_user.id,
+        "username":curr_user.username
+    }
+    return Response(data)
+
+
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+@api_view(['GET', 'POST'])
+def tickets(request):
+    if request.method == 'GET':
+        all_tickets = Ticket.objects.all()
+        serializer = TicketSerializer(all_tickets,many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    if request.method == 'POST':
+        serializer = TicketSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+@api_view(['GET', 'PUT', 'DELETE'])
+def ticket_details(request, pk):
+    try:
+        ticket = Ticket.objects.get(pk=pk)
+    except ticket.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = TicketSerializer(ticket)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    if request.method == 'PUT':
+        serializer = TicketSerializer(ticket, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    if request.method == 'DELETE':
+        ticket.delete()
+        return Response("Deleted Successfully")
+
+
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+@api_view(['GET', 'POST'])
+def ordered_tickets(request):
+    if request.method == 'GET':
+        all_ordered_tickets = OrderedTicket.objects.all()
+        serializer = OrderedTicketSerializer(all_ordered_tickets,many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    if request.method == 'POST':
+        serializer = OrderedTicketSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

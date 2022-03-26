@@ -13,8 +13,6 @@ urlpatterns = [
         path('stadiums', views.stadiums, name='stadiums'),
         path('matches', views.matches, name='matches'),
         path('rounds', views.matches_rounds),
-        path('personal_watch_list/<int:user_id>', views.personal_watch_list),
-        path('personal_watch_list/<int:user_id>/<int:pk>', views.personal_watch_list_details),
         path('team_coach/<str:team_name>', views.team_coach),
         path('stats/compare_players', views.compare_players),
         path('stats/compare_teams', views.compare_teams),
@@ -24,4 +22,9 @@ urlpatterns = [
         path('stats/crowd_avg', views.crowd_avg),
         path('api-token-auth', obtain_auth_token),
         path("sign_out", views.sign_out),
+        path('register', views.register),
+        path("users/current", views.current_user),
+        path("tickets",views.tickets),
+        path("ordered_tickets",views.ordered_tickets),
+        path("tickets/<int:pk>", views.ticket_details)
 ]
