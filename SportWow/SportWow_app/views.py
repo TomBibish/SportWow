@@ -88,8 +88,6 @@ def stadiums(request):
 
 
 @api_view(['GET', 'POST'])
-@authentication_classes([TokenAuthentication])
-@permission_classes([IsAuthenticated])
 def matches(request):
     if request.method == 'GET':
         all_matches = Match.objects.all().order_by('-round', 'game_date')
@@ -245,8 +243,8 @@ def current_user(request):
     return Response(data)
 
 
-@authentication_classes([TokenAuthentication])
-@permission_classes([IsAuthenticated])
+# @authentication_classes([TokenAuthentication])
+# @permission_classes([IsAuthenticated])
 @api_view(['GET', 'POST'])
 def tickets(request):
     if request.method == 'GET':
@@ -261,8 +259,8 @@ def tickets(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# @authentication_classes([TokenAuthentication])
-# @permission_classes([IsAuthenticated])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 @api_view(['GET', 'PUT', 'DELETE'])
 def ticket_details(request, pk):
     try:

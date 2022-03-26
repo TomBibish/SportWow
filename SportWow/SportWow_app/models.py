@@ -23,6 +23,7 @@ class Stadium(models.Model):
     name = models.CharField(max_length=128, null=False, blank=False)
     city = models.ForeignKey(City, on_delete=models.RESTRICT)
     capacity = models.IntegerField(null=False, blank=False)
+    picture_url = models.URLField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.name}, {self.city}"
