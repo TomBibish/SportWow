@@ -282,17 +282,43 @@ def ticket_details(request, pk):
         return Response("Deleted Successfully")
 
 
-@authentication_classes([TokenAuthentication])
-@permission_classes([IsAuthenticated])
+# @authentication_classes([TokenAuthentication])
+# @permission_classes([IsAuthenticated])
 @api_view(['GET', 'POST'])
 def ordered_tickets(request):
     if request.method == 'GET':
         all_ordered_tickets = OrderedTicket.objects.all()
+        if 'user' in request.GET and request.GET['user']:
+            all_ordered_tickets = all_ordered_tickets.filter(user=request.GET['user'])
         serializer = OrderedTicketSerializer(all_ordered_tickets,many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     if request.method == 'POST':
-        serializer = OrderedTicketSerializer(data=request.data)
+        ticket = Ticket.objects.get(pk=request.data['ticket'])
+        amount = request.data['amount']
+        user = User.objects.get(pk = request.data['user'])
+        new_ticket = OrderedTicket(user=user, amount=amount, ticket=ticket)
+        new_ticket.save()
+        return Response(status=status.HTTP_201_CREATED)
+
+
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+@api_view(['GET', 'PUT', 'DELETE'])
+def ordered_tickets_details(request,pk):
+    try:
+        ticket = OrderedTicket.objects.get(pk=pk)
+    except ticket.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = OrderedTicketSerializer(ticket)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    if request.method == 'PUT':
+        serializer = OrderedTicketSerializer(ticket, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    if request.method == 'DELETE':
+        ticket.delete()
+        return Response("Deleted Successfully")

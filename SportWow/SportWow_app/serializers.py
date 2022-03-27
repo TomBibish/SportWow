@@ -80,4 +80,4 @@ class OrderedTicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderedTicket
         fields = '__all__'
-        depth = 0
+        depth = 4
