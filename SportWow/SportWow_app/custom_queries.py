@@ -124,7 +124,8 @@ def show_players_for_league(league_id):
 def get_rounds():
     with connection.cursor() as cursor:
         cursor.execute("""select m.round from "SportWow_app_match" m 
-                            group by m.round;""")
+                            group by m.round
+                            order by m.round ;""")
         rows = cursor.fetchall()
         res_list = [{"round": row[0]} for row in rows]
         return res_list
