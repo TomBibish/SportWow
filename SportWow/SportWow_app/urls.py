@@ -28,4 +28,5 @@ urlpatterns = [
         path("ordered_tickets",views.ordered_tickets),
         path("tickets/<int:pk>", views.ticket_details),
         path("ordered_tickets/<int:pk>", views.ordered_tickets_details),
+        path("user_profile/current", views.user_profile),
 ]

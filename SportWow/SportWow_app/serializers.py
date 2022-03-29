@@ -81,3 +81,10 @@ class OrderedTicketSerializer(serializers.ModelSerializer):
         model = OrderedTicket
         fields = '__all__'
         depth = 4
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = '__all__'
+        depth = 0

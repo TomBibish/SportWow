@@ -322,3 +322,24 @@ def ordered_tickets_details(request,pk):
     if request.method == 'DELETE':
         ticket.delete()
         return Response("Deleted Successfully")
+
+
+@api_view(['GET', 'PUT'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def user_profile(request):
+    try:
+        user = UserProfile.objects.get(user=request.user.id)
+    except:
+        user = UserProfile(user=request.user)
+        user.save()
+    if request.method == 'GET':
+        serializer = UserProfileSerializer(user)
+        return Response(serializer.data)
+    if request.method == 'PUT':
+        serializer = UserProfileSerializer(instance=user, data=request.data['profile'])
+        print(serializer)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

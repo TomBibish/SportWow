@@ -129,3 +129,13 @@ class OrderedTicket(models.Model):
 
     def __str__(self):
         return f"{self.user} orderd {self.amount} tickets for {self.ticket.match}"
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.RESTRICT)
+    city = models.CharField(null=True, blank=True, max_length=128)
+    address = models.CharField(null=True, blank=True, max_length=128)
+    favorite_team = models.CharField(null=True, blank=True, max_length=128)
+
+    def __str__(self):
+        return f"{self.user.username} Profile"
