@@ -35,7 +35,7 @@ def compare_two_teams(team1_name, team2_name, league):
 
 def show_league_table(league):
     with connection.cursor() as cursor:
-        cursor.execute("""select t.picture_url , t."name" , t.points, t.goals_for , t.goals_against ,sum(t.goals_for - t.goals_against) as GoalsDiff 
+        cursor.execute("""select t.picture_url , t."name" , t.points, t.goals_for , t.goals_against ,(t.goals_for - t.goals_against) as GoalsDiff 
                             from "SportWow_app_team" t  join "SportWow_app_league" l on t.league_id = %s
                             group by t.picture_url , t.name, t.points, t.goals_for , t.goals_against 
                             order by points desc, GoalsDiff desc, t.goals_for  desc ;""",
@@ -49,7 +49,7 @@ def show_league_table(league):
 
 def show_league_assists(league):
     with connection.cursor() as cursor:
-        cursor.execute("""select p.picture_url,p.first_name, p.last_name, team."name", t.assists
+        cursor.execute("""select distinct p.picture_url,p.first_name, p.last_name, team."name", t.assists
                             from "SportWow_app_teamplayer" t 
                             join "SportWow_app_player" p on p.id = t.player_id 
                             join "SportWow_app_team" team on team.id = t.team_id 
@@ -65,7 +65,7 @@ def show_league_assists(league):
 
 def show_league_goals(league):
     with connection.cursor() as cursor:
-        cursor.execute("""select p.picture_url,p.first_name, p.last_name, team."name", t.goals
+        cursor.execute("""select distinct p.picture_url,p.first_name, p.last_name, team."name", t.goals
                             from "SportWow_app_teamplayer" t 
                             join "SportWow_app_player" p on p.id = t.player_id 
                             join "SportWow_app_team" team on team.id = t.team_id 

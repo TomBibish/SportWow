@@ -40,17 +40,16 @@ class League(models.Model):
 
 class Team(models.Model):
     name = models.CharField(max_length=128, null=False, blank=False)
-    city = models.ForeignKey(City, on_delete=models.RESTRICT)
+    city = models.ForeignKey(City, on_delete=models.RESTRICT, null=True, blank=True)
     country = models.ForeignKey(Country, on_delete=models.RESTRICT)
-    stadium = models.ForeignKey(Stadium, on_delete=models.RESTRICT)
+    stadium = models.ForeignKey(Stadium, on_delete=models.RESTRICT, null=True, blank=True)
     picture_url = models.URLField(blank=True, null=True)
     league = models.ForeignKey(League, on_delete=models.RESTRICT)
     points = models.IntegerField(null=True, blank=True)
     goals_for = models.IntegerField(null=True, blank=True, default=0)
     goals_against = models.IntegerField(null=True, blank=True, default=0)
-    color1 = models.CharField(max_length=128, default='white')
-    color2 = models.CharField(max_length=128, default='black')
-
+    color1 = models.CharField(max_length=128, default='white', null=True, blank=True)
+    color2 = models.CharField(max_length=128, default='black',null=True, blank=True)
 
     def __str__(self):
         return f"{self.name}"

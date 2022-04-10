@@ -210,12 +210,6 @@ def sign_out(request):
 
 @api_view(['POST'])
 def register(request):
-    # if request.method == 'GET':
-    #     users = User.objects.all()
-    #     users_list = [user for user in users]
-    #     serializer = UserSerializer(users_list, many=True)
-    #     print(serializer.data)
-    #     return Response(serializer.data, status=status.HTTP_200_OK)
     if request.method == 'POST':
         serializer = UserSerializer(data=request.data)
         data = {}
