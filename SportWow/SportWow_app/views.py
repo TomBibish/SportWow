@@ -205,7 +205,7 @@ obtain_auth_token = ObtainAuthToken.as_view()
 def sign_out(request):
     token1 = Token.objects.get(key=request.auth)
     token1.delete()
-    return 'Deleted successfully'
+    return Response(status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
