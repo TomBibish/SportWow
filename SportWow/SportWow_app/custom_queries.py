@@ -3,7 +3,8 @@ from django.db import connection
 
 def compare_two_players(player1_id, player2id):
     with connection.cursor() as cursor:
-        cursor.execute("""select p.picture_url , p.first_name, p.last_name, t."name", tp.goals, tp.assists, tp.yellow_cards, tp.red_cards 
+        cursor.execute("""select p.picture_url , p.first_name, p.last_name, t."name",
+                          tp.goals, tp.assists, tp.yellow_cards, tp.red_cards, p.id 
                           from "SportWow_app_teamplayer" tp 
                           join "SportWow_app_player" p on p.id =tp.player_id 
                           join "SportWow_app_team" t on t.id = tp.team_id
@@ -13,7 +14,7 @@ def compare_two_players(player1_id, player2id):
         rows = cursor.fetchall()
         res_list = [{"picture": row[0], "name": row[1]+' ' + row[2],
                      "team":row[3], 'goals':row[4], 'assists': row[5],
-                     "yellow_cards": row[6], "red_cards": row[7]} for row in rows]
+                     "yellow_cards": row[6], "red_cards": row[7], "id":row[8]} for row in rows]
         return res_list
 
 
