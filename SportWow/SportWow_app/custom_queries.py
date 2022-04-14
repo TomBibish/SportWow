@@ -1,16 +1,15 @@
 from django.db import connection
 
 
-def compare_two_players(player1_first_name, player1_last_name, player2_first_name, player2_last_name):
+def compare_two_players(player1_id, player2id):
     with connection.cursor() as cursor:
         cursor.execute("""select p.picture_url , p.first_name, p.last_name, t."name", tp.goals, tp.assists, tp.yellow_cards, tp.red_cards 
                           from "SportWow_app_teamplayer" tp 
                           join "SportWow_app_player" p on p.id =tp.player_id 
                           join "SportWow_app_team" t on t.id = tp.team_id
-                          where p.first_name = %s and p.last_name = %s
-                          or p.first_name = %s and  p.last_name = %s
+                      	  where p.id = %s or p.id = %s
                           order by goals desc;""",
-                       [player1_first_name, player1_last_name, player2_first_name, player2_last_name])
+                       [player1_id, player2id])
         rows = cursor.fetchall()
         res_list = [{"picture": row[0], "name": row[1]+' ' + row[2],
                      "team":row[3], 'goals':row[4], 'assists': row[5],

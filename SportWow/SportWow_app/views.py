@@ -131,12 +131,9 @@ def matches(request):
 
 @api_view(['GET'])
 def compare_players(request):
-    player1_first_name = request.GET.get('player1_first_name')
-    player1_last_name = request.GET.get('player1_last_name')
-    player2_first_name = request.GET.get('player2_first_name')
-    player2_last_name = request.GET.get('player2_last_name')
-    print('player1_first_name' + player1_first_name)
-    result = compare_two_players(player1_first_name, player1_last_name, player2_first_name, player2_last_name)
+    player1_id = request.GET.get('player1_id')
+    player2_id = request.GET.get('player2_id')
+    result = compare_two_players(player1_id, player2_id)
     return Response(result, status=status.HTTP_200_OK)
 
 
